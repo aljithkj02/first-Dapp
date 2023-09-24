@@ -3,11 +3,16 @@ import SimpleStorage from '../contracts/SimpleStorage.json'
 
 export const template = async () => {
     try {
-        const provider = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
-        
-        const web3 = new Web3(provider);
-        // console.log({ web3 })
+        let web3;
 
+        if(window.ethereum) {
+            web3           = new Web3(window.ethereum);
+            await window.ethereum.enable();
+        } else {
+            // const provider = new Web3.providers.HttpProvider('https://eth-sepolia.g.alchemy.com/v2/vBB7s2QPOETHQ75XO9eoUIXjaZXApb7z');
+            // web3           = new Web3(provider);
+        }
+        
         const networkid = await web3.eth.net.getId();
         const deployedNetwork = SimpleStorage.networks[networkid];
 
